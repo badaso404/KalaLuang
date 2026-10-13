@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 - /private/tmp/claude-501/-Users-bgsprtm-Herd-kalaluang/ad32ce69-301b-4a6f-9f8d-6958bfae1c47/scratchpad/out)",
+      "Bash(python3 /private/tmp/claude-501/-Users-bgsprtm-Herd-kalaluang/ad32ce69-301b-4a6f-9f8d-6958bfae1c47/scratchpad/make_logo.py /private/tmp/claude-501/-Users-bgsprtm-Herd-kalaluang/ad32ce69-301b-4a6f-9f8d-6958bfae1c47/images/1.jpg /private/tmp/claude-501/-Users-bgsprtm-Herd-kalaluang/ad32ce69-301b-4a6f-9f8d-6958bfae1c47/scratchpad/out)",
+      "Bash(python3 - /private/tmp/claude-501/-Users-bgsprtm-Herd-kalaluang/ad32ce69-301b-4a6f-9f8d-6958bfae1c47/images/1.jpg)",
+      "Bash(curl -sI http://kalaluang.test/favicon.ico)",
+      "Bash(curl -s http://kalaluang.test/favicon.ico)",
+      "Bash(xxd)",
+      "Bash(npm run *)",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}

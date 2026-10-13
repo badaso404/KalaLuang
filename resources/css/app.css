@@ -1,0 +1,60 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Diambil dari logo KalaLuang: biru #15417A dan oranye #F09412. */
+    --color-brand-50: #eef3fa;
+    --color-brand-100: #d8e4f3;
+    --color-brand-200: #b3c8e6;
+    --color-brand-500: #2e6bb8;
+    --color-brand-600: #1e5496;
+    --color-brand-700: #15417a;
+    --color-brand-900: #0e2c53;
+
+    --color-accent-50: #fef5e7;
+    --color-accent-100: #fde8c6;
+    --color-accent-200: #fbd79b;
+    --color-accent-500: #f09412;
+    --color-accent-600: #d97e08;
+    --color-accent-700: #b36506;
+}
+
+@utility btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition
+        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600
+        disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+@utility btn-primary {
+    @apply btn bg-brand-600 text-white hover:bg-brand-700;
+}
+
+@utility btn-secondary {
+    @apply btn border border-slate-300 bg-white text-slate-700 hover:bg-slate-50;
+}
+
+@utility btn-danger {
+    @apply btn bg-rose-600 text-white hover:bg-rose-700;
+}
+
+@utility input {
+    @apply block w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900
+        placeholder:text-slate-400 focus:border-brand-600 focus:ring-2 focus:ring-brand-200 focus:outline-none;
+}
+
+@utility label {
+    @apply mb-1.5 block text-sm font-medium text-slate-700;
+}
+
+@utility card {
+    @apply rounded-xl border border-slate-200 bg-white shadow-sm;
+}
+
+@utility badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+}
