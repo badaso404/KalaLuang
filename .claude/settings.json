@@ -13,7 +13,10 @@
       "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:controller Company/ApplicantCvController --invokable --no-interaction)",
       "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:controller CompanyDocumentDownloadController --invokable --no-interaction)",
       "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:controller PaymentProofDownloadController --invokable --no-interaction)",
-      "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:policy CompanyDocumentPolicy --model=CompanyDocument --no-interaction)"
+      "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:policy CompanyDocumentPolicy --model=CompanyDocument --no-interaction)",
+      "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:controller Auth/PasswordResetLinkController --no-interaction)",
+      "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:controller Auth/NewPasswordController --no-interaction)",
+      "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:test PasswordResetTest --phpunit --no-interaction)"
     ]
   }
 }

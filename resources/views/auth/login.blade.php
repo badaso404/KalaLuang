@@ -13,7 +13,11 @@
             </div>
 
             <div>
-                <label for="password" class="label">Password</label>
+                <div class="flex items-baseline justify-between">
+                    <label for="password" class="label">Password</label>
+                    <a href="{{ route('password.request') }}"
+                       class="text-sm font-semibold text-brand-700 hover:underline">Lupa password?</a>
+                </div>
                 <input id="password" name="password" type="password" class="input" required
                        autocomplete="current-password">
             </div>
