@@ -56,7 +56,7 @@
                             Lihat Detail
                         </a>
                         @if ($application->cv_path)
-                            <a href="{{ Storage::url($application->cv_path) }}" target="_blank" class="btn-secondary">
+                            <a href="{{ route('company.applicants.cv', $application) }}" target="_blank" class="btn-secondary">
                                 Buka CV
                             </a>
                         @endif

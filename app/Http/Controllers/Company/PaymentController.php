@@ -37,7 +37,7 @@ class PaymentController extends Controller
         ], [], ['proof' => 'bukti bayar']);
 
         $payment->update([
-            'proof_path' => $request->file('proof')->store('payment-proofs', 'public'),
+            'proof_path' => $request->file('proof')->store('payment-proofs', 'local'),
             'status' => PaymentStatus::WaitingConfirmation,
         ]);
 

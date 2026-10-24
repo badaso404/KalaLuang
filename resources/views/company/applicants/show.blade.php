@@ -69,7 +69,7 @@
 
         <div class="mt-5 flex flex-wrap gap-2 border-t border-slate-200 pt-5">
             @if ($application->cv_path)
-                <a href="{{ Storage::url($application->cv_path) }}" target="_blank" class="btn-secondary">Buka CV</a>
+                <a href="{{ route('company.applicants.cv', $application) }}" target="_blank" class="btn-secondary">Buka CV</a>
             @endif
             @if ($profile?->portfolio_url)
                 <a href="{{ $profile->portfolio_url }}" target="_blank" rel="noopener nofollow" class="btn-secondary">

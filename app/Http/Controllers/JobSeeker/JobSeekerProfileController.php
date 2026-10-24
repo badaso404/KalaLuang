@@ -31,11 +31,11 @@ class JobSeekerProfileController extends Controller
         $attributes = $request->safe()->except(['skills', 'cv']);
 
         if ($request->hasFile('cv')) {
-            if ($profile->cv_path !== null) {
-                Storage::disk('public')->delete($profile->cv_path);
+            if ($profile->cv_path !== null && ! $this->cvIsAttachedToAnApplication($request, $profile->cv_path)) {
+                Storage::disk('local')->delete($profile->cv_path);
             }
 
-            $attributes['cv_path'] = $request->file('cv')->store('cv', 'public');
+            $attributes['cv_path'] = $request->file('cv')->store('cv', 'local');
         }
 
         $profile->update($attributes);
@@ -44,5 +44,14 @@ class JobSeekerProfileController extends Controller
         return back()->with('status', $profile->isComplete()
             ? 'Profil tersimpan. Profil Anda sudah lengkap dan siap digunakan untuk melamar.'
             : 'Profil tersimpan. Lengkapi pendidikan dan unggah CV agar dapat melamar.');
+    }
+
+    /**
+     * An application stores the CV path it was sent with, so replacing the CV
+     * must not delete a file a company still needs to read.
+     */
+    protected function cvIsAttachedToAnApplication(Request $request, string $path): bool
+    {
+        return $request->user()->applications()->where('cv_path', $path)->exists();
     }
 }

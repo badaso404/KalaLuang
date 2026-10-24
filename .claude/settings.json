@@ -8,7 +8,12 @@
       "Bash(curl -s http://kalaluang.test/favicon.ico)",
       "Bash(xxd)",
       "Bash(npm run *)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:controller JobSeeker/CvDownloadController --invokable --no-interaction)",
+      "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:controller Company/ApplicantCvController --invokable --no-interaction)",
+      "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:controller CompanyDocumentDownloadController --invokable --no-interaction)",
+      "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:controller PaymentProofDownloadController --invokable --no-interaction)",
+      "Bash('/Users/bgsprtm/Library/Application Support/Herd/bin/php84' artisan make:policy CompanyDocumentPolicy --model=CompanyDocument --no-interaction)"
     ]
   }
 }

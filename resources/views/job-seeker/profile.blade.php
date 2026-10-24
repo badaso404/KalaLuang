@@ -106,7 +106,7 @@
                     @if ($profile->cv_path)
                         <p class="mt-2 text-sm text-slate-700">
                             CV tersimpan:
-                            <a href="{{ Storage::url($profile->cv_path) }}" target="_blank"
+                            <a href="{{ route('job-seeker.cv.show') }}" target="_blank"
                                class="font-semibold text-brand-700 hover:underline">Lihat CV</a>
                         </p>
                     @endif

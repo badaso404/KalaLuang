@@ -34,7 +34,7 @@ class JobSeekerProfileTest extends TestCase
 
     public function test_a_job_seeker_completes_their_profile_with_a_cv_and_skills(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
 
         $profile = JobSeekerProfile::factory()->incomplete()->create();
         $skills = Skill::factory()->count(3)->create();
@@ -52,7 +52,7 @@ class JobSeekerProfileTest extends TestCase
         $this->assertSame('Universitas Contoh', $profile->institution);
         $this->assertTrue($profile->isComplete());
         $this->assertCount(3, $profile->skills);
-        Storage::disk('public')->assertExists($profile->cv_path);
+        Storage::disk('local')->assertExists($profile->cv_path);
     }
 
     public function test_education_fields_are_required(): void
@@ -71,7 +71,7 @@ class JobSeekerProfileTest extends TestCase
 
     public function test_the_cv_must_be_a_pdf_under_two_megabytes(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
 
         $profile = JobSeekerProfile::factory()->incomplete()->create();
 
@@ -90,7 +90,7 @@ class JobSeekerProfileTest extends TestCase
 
     public function test_replacing_the_cv_deletes_the_previous_file(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
 
         $profile = JobSeekerProfile::factory()->incomplete()->create();
 
@@ -107,8 +107,8 @@ class JobSeekerProfileTest extends TestCase
         $secondPath = $profile->refresh()->cv_path;
 
         $this->assertNotSame($firstPath, $secondPath);
-        Storage::disk('public')->assertMissing($firstPath);
-        Storage::disk('public')->assertExists($secondPath);
+        Storage::disk('local')->assertMissing($firstPath);
+        Storage::disk('local')->assertExists($secondPath);
     }
 
     public function test_the_portfolio_url_must_be_a_url(): void

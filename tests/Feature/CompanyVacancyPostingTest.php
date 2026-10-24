@@ -119,7 +119,7 @@ class CompanyVacancyPostingTest extends TestCase
 
     public function test_uploading_a_payment_proof_moves_the_invoice_to_waiting_confirmation(): void
     {
-        Storage::fake('public');
+        Storage::fake('local');
 
         $company = Company::factory()->verified()->create();
         $vacancy = JobVacancy::factory()->pendingPayment()->for($company)->create();
@@ -134,7 +134,7 @@ class CompanyVacancyPostingTest extends TestCase
         $payment->refresh();
 
         $this->assertSame(PaymentStatus::WaitingConfirmation, $payment->status);
-        Storage::disk('public')->assertExists($payment->proof_path);
+        Storage::disk('local')->assertExists($payment->proof_path);
     }
 
     public function test_a_company_cannot_open_another_companys_invoice(): void

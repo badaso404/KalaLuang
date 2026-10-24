@@ -24,7 +24,7 @@
 
                     <div class="mt-3 flex flex-wrap items-center gap-2">
                         @if ($payment->proof_path)
-                            <a href="{{ Storage::url($payment->proof_path) }}" target="_blank" class="btn-secondary">
+                            <a href="{{ route('payment-proofs.show', $payment) }}" target="_blank" class="btn-secondary">
                                 Lihat Bukti Bayar
                             </a>
                         @else

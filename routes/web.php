@@ -11,16 +11,20 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Company\ApplicantController;
+use App\Http\Controllers\Company\ApplicantCvController;
 use App\Http\Controllers\Company\CompanyDocumentController;
 use App\Http\Controllers\Company\CompanyProfileController;
 use App\Http\Controllers\Company\CompanyVacancyController;
 use App\Http\Controllers\Company\DashboardController as CompanyDashboardController;
 use App\Http\Controllers\Company\PaymentController;
 use App\Http\Controllers\Company\VerificationStatusController;
+use App\Http\Controllers\CompanyDocumentDownloadController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobSeeker\ApplicationController;
+use App\Http\Controllers\JobSeeker\CvDownloadController;
 use App\Http\Controllers\JobSeeker\JobSeekerProfileController;
 use App\Http\Controllers\JobSeeker\SavedVacancyController;
+use App\Http\Controllers\PaymentProofDownloadController;
 use App\Http\Controllers\VacancyController;
 use App\Http\Controllers\VacancyReportController;
 use Illuminate\Support\Facades\Route;
@@ -45,7 +49,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/daftar', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('/daftar', [RegisteredUserController::class, 'store']);
     Route::get('/masuk', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('/masuk', [AuthenticatedSessionController::class, 'store']);
+    Route::post('/masuk', [AuthenticatedSessionController::class, 'store'])->middleware('throttle:login');
 });
 
 Route::middleware('auth')->group(function () {
@@ -72,6 +76,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'role:job_seeker'])->prefix('pencari-kerja')->name('job-seeker.')->group(function () {
     Route::get('/profil', [JobSeekerProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profil', [JobSeekerProfileController::class, 'update'])->name('profile.update');
+    Route::get('/cv', CvDownloadController::class)->name('cv.show');
 
     Route::get('/lamaran', [ApplicationController::class, 'index'])->name('applications.index');
 
@@ -127,7 +132,26 @@ Route::middleware(['auth', 'role:company'])->prefix('perusahaan')->name('company
 
     Route::get('/pelamar', [ApplicantController::class, 'index'])->name('applicants.index');
     Route::get('/pelamar/{application}', [ApplicantController::class, 'show'])->name('applicants.show');
+    Route::get('/pelamar/{application}/cv', ApplicantCvController::class)->name('applicants.cv');
     Route::put('/pelamar/{application}/status', [ApplicantController::class, 'updateStatus'])->name('applicants.status');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Berkas Privat (perusahaan pemilik & admin)
+|--------------------------------------------------------------------------
+|
+| Dokumen legalitas dan bukti bayar disimpan di disk privat, jadi hanya bisa
+| diakses lewat endpoint ini yang memeriksa policy terlebih dahulu.
+|
+*/
+
+Route::middleware(['auth', 'role:company,admin'])->group(function () {
+    Route::get('/dokumen-perusahaan/{document}', CompanyDocumentDownloadController::class)
+        ->name('company-documents.show');
+
+    Route::get('/bukti-bayar/{payment}', PaymentProofDownloadController::class)
+        ->name('payment-proofs.show');
 });
 
 /*

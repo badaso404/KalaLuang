@@ -75,7 +75,7 @@
         @if ($payment->proof_path)
             <p class="mt-4 text-sm text-slate-700">
                 Bukti terunggah:
-                <a href="{{ Storage::url($payment->proof_path) }}" target="_blank"
+                <a href="{{ route('payment-proofs.show', $payment) }}" target="_blank"
                    class="font-semibold text-brand-700 hover:underline">Lihat berkas</a>
             </p>
         @endif

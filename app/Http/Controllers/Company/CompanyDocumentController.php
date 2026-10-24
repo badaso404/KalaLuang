@@ -32,7 +32,7 @@ class CompanyDocumentController extends Controller
         $company->documents()->updateOrCreate(
             ['type' => $validated['type']],
             [
-                'file_path' => $request->file('document')->store('company-documents', 'public'),
+                'file_path' => $request->file('document')->store('company-documents', 'local'),
                 'uploaded_at' => now(),
             ],
         );

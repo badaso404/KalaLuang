@@ -65,7 +65,7 @@
                                     Diunggah {{ $document->uploaded_at->translatedFormat('d F Y') }}
                                 </p>
                             </div>
-                            <a href="{{ Storage::url($document->file_path) }}" target="_blank"
+                            <a href="{{ route('company-documents.show', $document) }}" target="_blank"
                                class="btn-secondary">Buka</a>
                         </li>
                     @endforeach
