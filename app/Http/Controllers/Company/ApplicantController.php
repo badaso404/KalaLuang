@@ -59,11 +59,16 @@ class ApplicantController extends Controller
 
         $validated = $request->validate([
             'status' => ['required', Rule::enum(ApplicationStatus::class)],
-        ], [], ['status' => 'status lamaran']);
+            'status_note' => ['nullable', 'string', 'max:1000'],
+        ], [], [
+            'status' => 'status lamaran',
+            'status_note' => 'catatan untuk pelamar',
+        ]);
 
         $application->update([
             'status' => $validated['status'],
             'status_updated_at' => now(),
+            'status_note' => $validated['status_note'] ?? null,
         ]);
 
         $application->user->notify(new ApplicationStatusChanged($application));

@@ -31,6 +31,7 @@ class ApplicationStatusChanged extends Notification
             'company_name' => $vacancy->company->name,
             'status' => $this->application->status->value,
             'message' => 'Status lamaran Anda untuk "'.$vacancy->title.'" kini: '.$this->application->status->label().'.',
+            'note' => $this->application->status_note,
         ];
     }
 }

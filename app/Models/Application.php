@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
     'cover_letter',
     'status',
     'status_updated_at',
+    'status_note',
 ])]
 class Application extends Model
 {

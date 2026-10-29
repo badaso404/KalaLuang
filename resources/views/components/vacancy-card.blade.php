@@ -1,6 +1,9 @@
 @props(['vacancy'])
 
-<article class="card group relative p-4 transition hover:border-brand-200 hover:shadow-md focus-within:ring-2 focus-within:ring-brand-200 sm:p-5">
+<article {{ $attributes->class([
+    'card group relative flex flex-col p-4 transition hover:border-brand-200 hover:shadow-md',
+    'focus-within:ring-2 focus-within:ring-brand-200 sm:p-5',
+]) }}>
     <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
             <h3 class="truncate text-base font-semibold text-slate-900 group-hover:text-brand-700 sm:text-lg">
@@ -50,6 +53,6 @@
     </div>
 
     @if ($vacancy->published_at)
-        <p class="mt-3 text-xs text-slate-500">Ditayangkan {{ $vacancy->published_at->diffForHumans() }}</p>
+        <p class="mt-auto pt-3 text-xs text-slate-500">Ditayangkan {{ $vacancy->published_at->diffForHumans() }}</p>
     @endif
 </article>

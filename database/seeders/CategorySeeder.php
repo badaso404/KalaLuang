@@ -20,6 +20,18 @@ class CategorySeeder extends Seeder
             'Keuangan',
             'Desain',
             'Customer Service',
+            'Penjualan',
+            'Sumber Daya Manusia',
+            'Operasional & Logistik',
+            'Produksi & Manufaktur',
+            'Pendidikan & Pelatihan',
+            'Kesehatan',
+            'Hukum',
+            'Media & Konten',
+            'Teknik & Konstruksi',
+            'Data & Riset',
+            'Pariwisata & Perhotelan',
+            'Pertanian & Pangan',
         ];
 
         foreach ($names as $name) {

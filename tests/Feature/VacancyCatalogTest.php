@@ -135,6 +135,6 @@ class VacancyCatalogTest extends TestCase
             ->assertOk()
             ->assertSee('Junior Designer')
             ->assertSee('Desain')
-            ->assertSee('1 lowongan sedang tayang');
+            ->assertSee('1 lowongan tayang');
     }
 }

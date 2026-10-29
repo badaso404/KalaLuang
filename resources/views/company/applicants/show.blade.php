@@ -86,20 +86,28 @@
         <h2 class="font-bold text-slate-900">Ubah status pelamar</h2>
         <p class="mt-1 text-sm text-slate-600">Pelamar akan menerima notifikasi setiap kali status berubah.</p>
 
-        <div class="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
-            <div>
-                <label for="status" class="label">Status</label>
-                <select id="status" name="status" class="input" required>
-                    @foreach ($statuses as $status)
-                        <option value="{{ $status->value }}" @selected($application->status === $status)>
-                            {{ $status->label() }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="flex items-end">
-                <button type="submit" class="btn-primary w-full">Simpan Status</button>
-            </div>
+        <div class="mt-4">
+            <label for="status" class="label">Status</label>
+            <select id="status" name="status" class="input sm:max-w-xs" required>
+                @foreach ($statuses as $status)
+                    <option value="{{ $status->value }}" @selected($application->status === $status)>
+                        {{ $status->label() }}
+                    </option>
+                @endforeach
+            </select>
         </div>
+
+        <div class="mt-4">
+            <label for="status_note" class="label">Catatan untuk pelamar <span class="font-normal text-slate-500">(opsional)</span></label>
+            <textarea id="status_note" name="status_note" rows="3" class="input"
+                      placeholder="Mis. Selamat! Tim kami akan menghubungi Anda melalui email pada hari Senin untuk menjadwalkan wawancara.">{{ old('status_note', $application->status_note) }}</textarea>
+            <p class="mt-1.5 text-xs text-slate-500">
+                Catatan ini ikut terkirim ke notifikasi pelamar dan tampil di riwayat lamaran mereka. Gunakan untuk
+                menjelaskan langkah berikutnya &mdash; terutama saat pelamar diterima, karena di KalaLuang belum ada
+                fitur percakapan.
+            </p>
+        </div>
+
+        <button type="submit" class="btn-primary mt-4">Simpan Status</button>
     </form>
 </x-company-panel>

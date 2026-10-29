@@ -14,7 +14,8 @@ use Illuminate\Support\Str;
 class CompanySeeder extends Seeder
 {
     /**
-     * Seed three companies: two verified, one still awaiting verification.
+     * Seed six companies: five verified across different industries so the
+     * public landing page has breadth, plus one still awaiting verification.
      */
     public function run(): void
     {
@@ -41,6 +42,39 @@ class CompanySeeder extends Seeder
                 'address' => 'Jl. Dago No. 45, Bandung',
                 'website' => 'https://contohkreatif.test',
                 'description' => 'Agensi kreatif yang membina fresh graduate melalui program magang pemasaran digital dan web support.',
+                'verification_status' => CompanyVerificationStatus::Verified,
+            ],
+            [
+                'email' => 'hrd@contohsehat.test',
+                'contact' => 'Ratna Kusuma',
+                'name' => 'Klinik Contoh Sehat',
+                'industry' => 'Kesehatan',
+                'city' => 'Yogyakarta',
+                'address' => 'Jl. Kaliurang No. 88, Sleman',
+                'website' => 'https://contohsehat.test',
+                'description' => 'Jaringan klinik pratama yang membuka jalur karier bagi lulusan baru bidang kesehatan dan administrasi medis.',
+                'verification_status' => CompanyVerificationStatus::Verified,
+            ],
+            [
+                'email' => 'rekrutmen@contohlogistik.test',
+                'contact' => 'Hendra Wijaya',
+                'name' => 'Koperasi Contoh Logistik',
+                'industry' => 'Logistik & Distribusi',
+                'city' => 'Semarang',
+                'address' => 'Jl. Pemuda No. 21, Semarang',
+                'website' => 'https://contohlogistik.test',
+                'description' => 'Koperasi distribusi barang kebutuhan harian dengan armada di Jawa Tengah.',
+                'verification_status' => CompanyVerificationStatus::Verified,
+            ],
+            [
+                'email' => 'karier@contohrasa.test',
+                'contact' => 'Komang Ayu',
+                'name' => 'PT Contoh Rasa Nusantara',
+                'industry' => 'Perhotelan & Pangan',
+                'city' => 'Denpasar',
+                'address' => 'Jl. Sunset Road No. 7, Badung',
+                'website' => 'https://contohrasa.test',
+                'description' => 'Pengelola hotel dan unit pengolahan pangan lokal yang rutin merekrut lulusan baru pariwisata dan pertanian.',
                 'verification_status' => CompanyVerificationStatus::Verified,
             ],
             [
