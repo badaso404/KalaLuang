@@ -9,6 +9,7 @@ use App\Models\Skill;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 
 class JobSeekerProfileController extends Controller
@@ -19,16 +20,34 @@ class JobSeekerProfileController extends Controller
 
         return view('job-seeker.profile', [
             'profile' => $profile->load('skills'),
-            'skills' => Skill::query()->orderBy('name')->get(),
+            'skillGroups' => $this->skillGroups(),
             'educationLevels' => EducationLevel::cases(),
             'selectedSkills' => $profile->skills->pluck('id')->all(),
         ]);
     }
 
+    /**
+     * The catalogue is long, so the form lists it per sector, alphabetically,
+     * with the skills job seekers typed themselves — uncategorised — grouped
+     * into a single last section.
+     *
+     * @return Collection<string, Collection<int, Skill>>
+     */
+    protected function skillGroups(): Collection
+    {
+        return Skill::query()
+            ->orderBy('name')
+            ->get()
+            ->groupBy(fn (Skill $skill): string => $skill->category ?? Skill::OtherCategory)
+            ->sortKeysUsing(function (string $first, string $second): int {
+                return [$first === Skill::OtherCategory, $first] <=> [$second === Skill::OtherCategory, $second];
+            });
+    }
+
     public function update(JobSeekerProfileRequest $request): RedirectResponse
     {
         $profile = $request->user()->jobSeekerProfile;
-        $attributes = $request->safe()->except(['skills', 'cv']);
+        $attributes = $request->safe()->except(['skills', 'custom_skills', 'cv']);
 
         if ($request->hasFile('cv')) {
             if ($profile->cv_path !== null && ! $this->cvIsAttachedToAnApplication($request, $profile->cv_path)) {
@@ -39,11 +58,28 @@ class JobSeekerProfileController extends Controller
         }
 
         $profile->update($attributes);
-        $profile->skills()->sync($request->validated('skills') ?? []);
+        $profile->skills()->sync($this->skillIds($request));
 
         return back()->with('status', $profile->isComplete()
             ? 'Profil tersimpan. Profil Anda sudah lengkap dan siap digunakan untuk melamar.'
             : 'Profil tersimpan. Lengkapi pendidikan dan unggah CV agar dapat melamar.');
+    }
+
+    /**
+     * Skills picked from the catalogue arrive as ids, while skills the job
+     * seeker typed arrive as names and join the catalogue the first time
+     * anyone names them.
+     *
+     * @return list<int>
+     */
+    protected function skillIds(JobSeekerProfileRequest $request): array
+    {
+        return collect($request->validated('skills') ?? [])
+            ->merge(collect($request->validated('custom_skills') ?? [])
+                ->map(fn (string $name): int => Skill::findOrCreateByName($name)->id))
+            ->unique()
+            ->values()
+            ->all();
     }
 
     /**

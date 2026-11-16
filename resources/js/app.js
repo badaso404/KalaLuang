@@ -98,3 +98,83 @@ function initCarousel(root) {
 }
 
 document.querySelectorAll('[data-carousel]').forEach(initCarousel);
+
+/**
+ * Pemilih keahlian pada form profil pencari kerja.
+ *
+ * Katalognya panjang dan dikelompokkan per sektor, jadi JS di sini hanya
+ * menambahkan pencarian, penghitung jumlah pilihan, dan buka-tutup otomatis.
+ * Tanpa JS, semua kelompok tetap bisa dibuka dan centangnya tetap terkirim.
+ */
+function initSkillPicker(root) {
+    const search = root.querySelector('[data-skill-search]');
+    const counter = root.querySelector('[data-skill-count]');
+    const noMatch = root.querySelector('[data-skill-no-match]');
+    const groups = Array.from(root.querySelectorAll('[data-skill-group]'));
+    const options = Array.from(root.querySelectorAll('[data-skill-option]'));
+
+    const checkboxOf = (option) => option.querySelector('input[type="checkbox"]');
+
+    const syncCounts = () => {
+        if (counter) {
+            counter.textContent = String(options.filter((option) => checkboxOf(option).checked).length);
+        }
+
+        groups.forEach((group) => {
+            const badge = group.querySelector('[data-skill-group-count]');
+
+            if (! badge) {
+                return;
+            }
+
+            const checked = Array.from(group.querySelectorAll('input[type="checkbox"]'))
+                .filter((input) => input.checked).length;
+
+            badge.textContent = `${checked} dipilih`;
+            badge.style.display = checked > 0 ? '' : 'none';
+        });
+    };
+
+    const filter = () => {
+        const terms = (search?.value ?? '').toLowerCase().split(/\s+/).filter(Boolean);
+        let visible = 0;
+
+        options.forEach((option) => {
+            const name = option.dataset.skillName ?? '';
+            const matches = terms.every((term) => name.includes(term));
+
+            option.hidden = ! matches;
+            visible += matches ? 1 : 0;
+        });
+
+        groups.forEach((group) => {
+            const hasVisible = Array.from(group.querySelectorAll('[data-skill-option]'))
+                .some((option) => ! option.hidden);
+            const hasChecked = Array.from(group.querySelectorAll('input[type="checkbox"]'))
+                .some((input) => input.checked);
+
+            group.hidden = ! hasVisible;
+
+            if (terms.length > 0) {
+                group.open = hasVisible;
+            } else {
+                group.open = hasChecked;
+            }
+        });
+
+        noMatch?.classList.toggle('hidden', terms.length === 0 || visible > 0);
+    };
+
+    root.addEventListener('change', (event) => {
+        if (event.target.matches('input[type="checkbox"]')) {
+            syncCounts();
+        }
+    });
+
+    search?.addEventListener('input', filter);
+    search?.addEventListener('search', filter);
+
+    syncCounts();
+}
+
+document.querySelectorAll('[data-skill-picker]').forEach(initSkillPicker);

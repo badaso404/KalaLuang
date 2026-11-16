@@ -6,6 +6,7 @@ use App\Enums\EducationLevel;
 use App\Models\JobSeekerProfile;
 use App\Models\Skill;
 use App\Models\User;
+use Database\Seeders\SkillSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -53,6 +54,53 @@ class JobSeekerProfileTest extends TestCase
         $this->assertTrue($profile->isComplete());
         $this->assertCount(3, $profile->skills);
         Storage::disk('local')->assertExists($profile->cv_path);
+    }
+
+    public function test_a_job_seeker_adds_skills_that_are_missing_from_the_catalogue(): void
+    {
+        $profile = JobSeekerProfile::factory()->create();
+        $existing = Skill::factory()->create(['name' => 'Menjahit']);
+
+        $this->actingAs($profile->user)
+            ->put(route('job-seeker.profile.update'), $this->payload([
+                'custom_skills' => '  Mengemudi   becak motor , menjahit, Mengemudi becak motor, ',
+            ]))
+            ->assertRedirect();
+
+        $this->assertSame(
+            ['Mengemudi becak motor', 'Menjahit'],
+            $profile->refresh()->skills->pluck('name')->sort()->values()->all()
+        );
+        $this->assertTrue($profile->skills->contains($existing));
+        $this->assertSame(1, Skill::query()->where('name', 'Mengemudi becak motor')->count());
+    }
+
+    public function test_an_added_skill_is_kept_alongside_the_ones_picked_from_the_catalogue(): void
+    {
+        $profile = JobSeekerProfile::factory()->create();
+        $picked = Skill::factory()->create();
+
+        $this->actingAs($profile->user)
+            ->put(route('job-seeker.profile.update'), $this->payload([
+                'skills' => [$picked->id],
+                'custom_skills' => 'Pembuatan kerupuk',
+            ]))
+            ->assertRedirect();
+
+        $this->assertCount(2, $profile->refresh()->skills);
+    }
+
+    public function test_an_added_skill_is_rejected_when_it_is_too_long(): void
+    {
+        $profile = JobSeekerProfile::factory()->create();
+
+        $this->actingAs($profile->user)
+            ->put(route('job-seeker.profile.update'), $this->payload([
+                'custom_skills' => str_repeat('a', 61),
+            ]))
+            ->assertSessionHasErrors('custom_skills.0');
+
+        $this->assertCount(0, $profile->refresh()->skills);
     }
 
     public function test_education_fields_are_required(): void
@@ -129,5 +177,23 @@ class JobSeekerProfileTest extends TestCase
         $this->actingAs($user)->get(route('job-seeker.profile.edit'))->assertOk();
 
         $this->assertNotNull($user->refresh()->jobSeekerProfile);
+    }
+
+    public function test_the_profile_page_lists_the_skill_catalogue_grouped_by_sector(): void
+    {
+        $this->seed(SkillSeeder::class);
+
+        $profile = JobSeekerProfile::factory()->create();
+        $profile->skills()->attach(Skill::query()->where('name', 'Menjahit')->value('id'));
+        $typedByHand = Skill::factory()->create(['name' => 'Pembuatan kerupuk', 'category' => null]);
+
+        $this->actingAs($profile->user)
+            ->get(route('job-seeker.profile.edit'))
+            ->assertOk()
+            ->assertSee('Tekstil & Garmen')
+            ->assertSee('Pertanian, Peternakan & Perikanan')
+            ->assertSee('Menjahit')
+            ->assertSee('Keahlian lainnya (opsional)')
+            ->assertSeeInOrder(['Administrasi & Keuangan', 'Bahasa', 'Tekstil & Garmen', Skill::OtherCategory, $typedByHand->name]);
     }
 }
