@@ -35,8 +35,10 @@ class DashboardController extends Controller
             'activeVacancies' => JobVacancy::query()->published()->count(),
             'verifiedCompanies' => Company::query()->verified()->count(),
             'jobSeekers' => User::query()->where('role', UserRole::JobSeeker)->count(),
+            /** `whereHas` drops payments whose company has been deleted. */
             'confirmedRevenue' => (int) Payment::query()
                 ->where('status', PaymentStatus::Paid)
+                ->whereHas('company')
                 ->sum('amount'),
         ]);
     }

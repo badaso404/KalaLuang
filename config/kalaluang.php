@@ -18,6 +18,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Statistik Pengunjung
+    |--------------------------------------------------------------------------
+    |
+    | Lama penyimpanan baris kunjungan sebelum dibuang oleh `model:prune`.
+    | Statistik di panel admin hanya melihat 30 hari terakhir, jadi nilai di
+    | bawah itu akan membuat grafiknya bolong.
+    |
+    */
+
+    'visit_retention_days' => (int) env('KALALUANG_VISIT_RETENTION_DAYS', 90),
+
+    /*
+    |--------------------------------------------------------------------------
     | Slide Promosi Beranda Publik
     |--------------------------------------------------------------------------
     |

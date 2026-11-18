@@ -7,6 +7,7 @@
         ['label' => 'Konfirmasi Pembayaran', 'url' => route('admin.payments.index'), 'active' => request()->routeIs('admin.payments.*')],
         ['label' => 'Kurasi Lowongan', 'url' => route('admin.curation.index'), 'active' => request()->routeIs('admin.curation.*')],
         ['label' => 'Laporan', 'url' => route('admin.reports.index'), 'active' => request()->routeIs('admin.reports.*')],
+        ['label' => 'Pengunjung', 'url' => route('admin.visits.index'), 'active' => request()->routeIs('admin.visits.*')],
     ];
 @endphp
 

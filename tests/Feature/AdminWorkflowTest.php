@@ -223,6 +223,7 @@ class AdminWorkflowTest extends TestCase
             route('admin.curation.show', $vacancy),
             route('admin.reports.index'),
             route('admin.reports.show', $report),
+            route('admin.visits.index'),
         ];
 
         foreach ($pages as $page) {
@@ -230,5 +231,22 @@ class AdminWorkflowTest extends TestCase
         }
 
         $this->assertNotNull($payment);
+    }
+
+    public function test_confirmed_revenue_ignores_payments_of_deleted_companies(): void
+    {
+        $kept = Company::factory()->create();
+        $removed = Company::factory()->create();
+
+        Payment::factory()->paid()->for($kept)->create(['amount' => 100_000]);
+        Payment::factory()->paid()->for($removed)->create(['amount' => 100_000]);
+
+        $removed->delete();
+
+        $this->actingAs($this->admin)
+            ->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('Rp100.000')
+            ->assertDontSee('Rp200.000');
     }
 }

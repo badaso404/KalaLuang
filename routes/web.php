@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PaymentConfirmationController;
 use App\Http\Controllers\Admin\VacancyCurationController;
 use App\Http\Controllers\Admin\VacancyReportReviewController;
+use App\Http\Controllers\Admin\VisitStatisticController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
@@ -189,6 +190,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/kurasi/{vacancy}', [VacancyCurationController::class, 'show'])->name('curation.show');
     Route::post('/kurasi/{vacancy}/setujui', [VacancyCurationController::class, 'approve'])->name('curation.approve');
     Route::post('/kurasi/{vacancy}/tolak', [VacancyCurationController::class, 'reject'])->name('curation.reject');
+
+    Route::get('/pengunjung', VisitStatisticController::class)->name('visits.index');
 
     Route::get('/laporan', [VacancyReportReviewController::class, 'index'])->name('reports.index');
     Route::get('/laporan/{report}', [VacancyReportReviewController::class, 'show'])->name('reports.show');
